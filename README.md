@@ -1,6 +1,6 @@
 # clj-cb
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library for Couchbase for Server 4.
 
 ## Usage
 
@@ -10,5 +10,5 @@ FIXME
 
 Copyright © 2016 FIXME
 
-Distributed under the Eclipse Public License either version 1.0 or (at
+Distributed under the Apache Public License either version 1.0 or (at
 your option) any later version.
