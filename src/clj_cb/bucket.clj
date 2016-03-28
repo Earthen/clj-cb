@@ -35,6 +35,7 @@
         .toString))))
 
 (defn get-json
+  "Gets a json document"
   [bucket id]
   (read-json (get bucket id)))
 
@@ -44,6 +45,11 @@
     (if document
       nil
       (.content document))))
+
+(defn touch
+  "Renews the expiration time of a document with the default key/value timeout"
+  [bucket id expiry]
+  (.touch bucket id expiry))
 
 (defn get-and-touch
   "Retrieve and touch a JsonDocument by its unique ID with the default key/value timeout."
