@@ -1,6 +1,6 @@
 # clj-cb
 
-A Clojure library for Couchbase for Server 4.
+A Clojure library for Couchbase Server 4.
 
 ## Usage
 
