@@ -16,12 +16,14 @@
 
 
 (defn create-bucket
-  "Increment or decrement a counter with 0 value
-  and a default value of 0 with the default key/value timeout."
-  [cluster bucket-name]
-  (.openBucket cluster bucket-name))
+  ([cluster bucket-name]
+   (create-bucket cluster bucket-name 20))
+  ([cluster bucket-name time]
+   (.openBucket cluster bucket-name time TimeUnit/SECONDS)))
 
 (defn create-counter
+  "Increment or decrement a counter with 0 value
+  and a default value of 20 with the default key/value timeout."
   ([bucket k ]
    (create-counter bucket k 0 1))
   ([bucket k delta initial]
