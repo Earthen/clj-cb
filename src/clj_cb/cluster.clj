@@ -1,5 +1,5 @@
 (ns clj-cb.cluster
-  (:import [com.couchbase.client.java.CouchbaseCluster]))
+  (:import [com.couchbase.client.java CouchbaseCluster]))
 
 (defn cb-cluster-builder
   "Create and sets the cluster"

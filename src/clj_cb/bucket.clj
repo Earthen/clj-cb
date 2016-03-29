@@ -1,7 +1,8 @@
 (ns clj-cb.bucket
-  (:import [com.couchbase.client.java.Bucket]
-           [com.couchbase.client.java.document.JsonDocument]
-           [com.couchbase.client.java.document.json.JsonObject])
+  (:import [com.couchbase.client.java Bucket]
+           [com.couchbase.client.java.document JsonDocument]
+           [com.couchbase.client.java.document.json JsonObject]
+           [java.util.concurrent TimeUnit])
   (:require [clojure.data.json :as json]))
 
 (defn read-json
@@ -62,7 +63,7 @@
 
 (defn unlock-document
   [bucket id document]
-  (.unlock bucket k (.cas document)))
+  (.unlock bucket id (.cas document)))
 
 (defn- create-json-document
   [id json]
