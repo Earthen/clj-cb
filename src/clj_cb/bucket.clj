@@ -1,9 +1,9 @@
 (ns clj-cb.bucket
   (:import [com.couchbase.client.java Bucket]
            [com.couchbase.client.java.document JsonDocument]
-           [com.couchbase.client.java.document.json JsonObject]
-           [java.util.concurrent TimeUnit])
-  (:require [clojure.data.json :as json]))
+           [com.couchbase.client.java.document.json JsonObject])
+  (:require [clojure.data.json :as json]
+            [clj-cb.utils :as u]))
 
 (defn read-json
   "Reads a JSON value from input String.
@@ -17,9 +17,9 @@
 
 (defn create-bucket
   ([cluster bucket-name]
-   (create-bucket cluster bucket-name 20))
-  ([cluster bucket-name time]
-   (.openBucket cluster bucket-name time TimeUnit/SECONDS)))
+   (create-bucket cluster bucket-name 20 :seconds))
+  ([cluster bucket-name time time-type]
+   (.openBucket cluster bucket-name time (u/time-utils time-type))))
 
 (defn create-counter
   "Increment or decrement a counter with 0 value
@@ -82,17 +82,7 @@
   (.remove bucket id))
 
 (defn close
-  [bucket & {:keys [microseconds milliseconds seconds minutes hours days] :or [seconds 75]}]
-  (let [[time time-unit]  (cond microseconds
-                                [microseconds TimeUnit/MICROSECONDS]
-                                milliseconds
-                                [milliseconds TimeUnit/MILLISECONDS]
-                                seconds
-                                [seconds TimeUnit/SECONDS]
-                                minutes
-                                [minutes TimeUnit/MINUTES]
-                                hours
-                                [hours TimeUnit/HOURS]
-                                days
-                                [days TimeUnit/DAYS])]
-    (.close bucket time time-unit)))
+  ([bucket] (close bucket 30 :seconds))
+  ([bucket time type]
+   (.close bucket time (u/time-utils type))))
+
