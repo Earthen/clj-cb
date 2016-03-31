@@ -15,11 +15,6 @@
   write-json json/json-str)
 
 
-(defn create-bucket
-  ([cluster bucket-name]
-   (create-bucket cluster bucket-name 20 :seconds))
-  ([cluster bucket-name time time-type]
-   (.openBucket cluster bucket-name time (u/time-utils time-type))))
 
 (defn create-counter
   "Increment or decrement a counter with 0 value
@@ -77,6 +72,10 @@
   (let [document (create-json-document id json)]
     (.upsert bucket document)))
 
+(defn manager
+  [bucket]
+  (.bucketManager bucket))
+
 (defn remove
   [bucket id]
   (.remove bucket id))
@@ -84,5 +83,5 @@
 (defn close
   ([bucket] (close bucket 30 :seconds))
   ([bucket time type]
-   (.close bucket time (u/time-utils type))))
+   (.close bucket time (u/time type))))
 

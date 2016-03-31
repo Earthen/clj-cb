@@ -2,18 +2,18 @@
   (:import [java.util.concurrent TimeUnit]))
 
 
-(defn time-utils
+(defn time
   "Transform type to a TimeUnit"
   [time-type]
-  (cond (= :microseconds time-type)
+  (cond (= :MICROSECONDS time-type)
         TimeUnit/MICROSECONDS
-        (= :milliseconds time-type)
+        (= :MILLISECONDS time-type)
         TimeUnit/MILLISECONDS
-        (= :seconds time-type)
+        (= :SECONDS time-type)
         TimeUnit/SECONDS
-        (= :minutes time-type)
+        (= :MINUTES time-type)
         TimeUnit/MINUTES
-        (= :hours time-type)
+        (= :HOURS time-type)
         TimeUnit/HOURS
-        (= :days time-type)
+        (= :DAYS time-type)
         TimeUnit/DAYS))
