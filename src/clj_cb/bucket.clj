@@ -1,4 +1,5 @@
 (ns clj-cb.bucket
+  (:refer-clojure :exclude [get replace remove])
   (:import [com.couchbase.client.java Bucket]
            [com.couchbase.client.java.document JsonDocument]
            [com.couchbase.client.java.document.json JsonObject])
