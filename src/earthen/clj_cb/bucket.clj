@@ -1,4 +1,4 @@
-(ns clj-cb.bucket
+(ns earthen.clj-cb.bucket
   (:refer-clojure :exclude [get replace remove])
   (:import [com.couchbase.client.java Bucket]
            [com.couchbase.client.java.document JsonDocument]
@@ -42,7 +42,6 @@
   [bucket id seconds]
   (let [document (.getAndLock bucket id seconds)]
     (if document
-      nil
       (.content document))))
 
 (defn touch
@@ -82,7 +81,8 @@
   (.remove bucket id))
 
 (defn close
-  ([bucket] (close bucket 30 :seconds))
+  ([bucket] (close bucket 30 :SECONDS))
   ([bucket time type]
    (.close bucket time (u/time type))))
+
 

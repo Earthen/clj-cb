@@ -1,4 +1,4 @@
-(ns clj-cb.utils
+(ns earthen.clj-cb.utils
   (:import [java.util.concurrent TimeUnit]))
 
 

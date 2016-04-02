@@ -1,4 +1,4 @@
-(ns clj-cb.cluster
+(ns earthen.clj-cb.cluster
   (:require [clj-cb.utils :as u])
   (:import [com.couchbase.client.java CouchbaseCluster]
            [com.couchbase.client.java.bucket BucketManager]))

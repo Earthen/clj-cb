@@ -1,4 +1,4 @@
-(ns clj-cb.pool
+(ns earthen.clj-cb.pool
   (:require [clj-cb.cluster :as cluster]
             [clj-cb.bucket :as bucket]))
 
