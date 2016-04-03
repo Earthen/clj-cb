@@ -1,6 +1,6 @@
 (ns earthen.clj-cb.bucket-manager
   (:refer-clojure :exclude [flush])
-  (:require [clj-cb.utils :as u])
+  (:require [earthen.clj-cb.utils :as u])
   (:import [com.couchbase.client.java.bucket BucketManager]))
 
 (defn flush

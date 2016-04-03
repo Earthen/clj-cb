@@ -4,7 +4,7 @@
            [com.couchbase.client.java.document JsonDocument]
            [com.couchbase.client.java.document.json JsonObject])
   (:require [clojure.data.json :as json]
-            [clj-cb.utils :as u]))
+            [earthen.clj-cb.utils :as u]))
 
 (defn read-json
   "Reads a JSON value from input String.
@@ -26,23 +26,22 @@
    (.counter bucket k delta initial)))
 
 (defn get
-  [bucket id]
-  (let [document (.get bucket id)]
-    (if document
-      (-> document
-        .content
-        .toString))))
-
-(defn get-json
-  "Gets a json document"
-  [bucket id]
-  (read-json (get bucket id)))
+  ([bucket id]
+   (get bucket id :json))
+  ([bucket id format]
+   (let [doc (.get bucket id)]
+     (if doc
+       (if (= :raw format)
+         (-> doc
+             .content
+            .toString)
+         (document doc))))))
 
 (defn get-and-lock
   [bucket id seconds]
-  (let [document (.getAndLock bucket id seconds)]
-    (if document
-      (.content document))))
+  (let [doc (.getAndLock bucket id seconds)]
+    (if doc
+       (document doc))))
 
 (defn touch
   "Renews the expiration time of a document with the default key/value timeout"
@@ -53,24 +52,22 @@
   "Retrieve and touch a JsonDocument by its unique ID with the default key/value timeout."
   ([bucket id] (get-and-touch bucket id 0))
   ([bucket id expiry]
-   (-> (.getAndTouch bucket id expiry)
-       .content
-       .toString
-       read-json)))
+   (document (.getAndTouch bucket id expiry))))
 
 (defn unlock-document
-  [bucket id document]
-  (.unlock bucket id (.cas document)))
+  [bucket document]
+  (.unlock bucket (:id document) (:cas document)))
 
-(defn- create-json-document
+(defn create-json-document
   [id json]
   (let [json-object (JsonObject/fromJson (write-json json))]
     (JsonDocument/create id json-object)))
 
 (defn replace
   [bucket id json]
-  (let [document (create-json-document id json)]
-    (.upsert bucket document)))
+  (let [json (if (string? json) (read-json json) json)
+        doc (create-json-document id json)]
+    (document (.upsert bucket doc))))
 
 (defn manager
   [bucket]
@@ -85,4 +82,15 @@
   ([bucket time type]
    (.close bucket time (u/time type))))
 
+
+(defn document
+  [jsondocument]
+  {:id (.id jsondocument)
+   :cas (.cas jsondocument)
+   :expiry (.expiry jsondocument)
+   :mutation-token (.mutationToken jsondocument)
+   :content  (-> jsondocument
+                 .content
+                 .toString
+                 read-json)})
 
