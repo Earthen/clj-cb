@@ -1,4 +1,4 @@
-(defproject clj-cb "0.1.0-SNAPSHOT"
+(defproject earthen/clj-cb "0.1.0-SNAPSHOT"
   :description "A Clojure client for Couchbase for Server 4.x"
   :url "http://example.com/FIXME"
   :license {:name "Apache Public License"
