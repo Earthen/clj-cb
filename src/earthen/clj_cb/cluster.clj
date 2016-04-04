@@ -3,8 +3,8 @@
   (:import [com.couchbase.client.java CouchbaseCluster]
            [com.couchbase.client.java.bucket BucketManager]))
 
-(defn cb-cluster-builder
-  "Create and sets the cluster"
+(defn create
+  "Create and sets the cluster/s with a vector or a string"
   [string]
   (let [urls (if (string? string) (vector string) string)]
     (CouchbaseCluster/create urls)))

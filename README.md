@@ -17,9 +17,13 @@ A Clojure java-client wrapper for Couchbase Server 4.
     ;; we create a bucket
     (def bucket (c/create-bucket cluster "gamesim-sample"))
     
-    ;; we get documents from bucket
-    (b/get-json bucket "Aaron1")
-        => {:hitpoints 23832, :level 141, :loggedIn true, :name "Aaron1", :jsonType "player", :experience 14248, :uuid "78edf902-7dd2-49a4-99b4-1c94ee286a33"}
+    ;; we get documents from bucket mapped
+    (b/get bucket "Aaron1")
+        => {:id "Aaron1", :cas 29856054464387, :expiry 0, :mutation-token nil, :content {:hitpoints 23832, :level 141, :loggedIn true, :name "Aaron1", :jsonType "player", :experience 248, :uuid "78edf902-7dd2-49a4-99b4-1c94ee286a33"}}
+    
+    ;; you can also get the json without mapping
+     (b/get bucket "Aaron1" :raw)
+         => "{\"hitpoints\":23832,\"level\":141,\"loggedIn\":true,\"name\":\"Aaron1\",\"jsonType\":\"player\",\"experience\":248,\"uuid\":\"78edf902-7dd2-49a4-99b4-1c94ee286a33\"}"
     
     ;; to create/update a json
     (b/replace bucket "Aaron1" "{
@@ -31,6 +35,10 @@ A Clojure java-client wrapper for Couchbase Server 4.
         \"name\": \"Aaron1\",
         \"uuid\": \"78edf902-7dd2-49a4-99b4-1c94ee286a33\"
         }")
+        => {:id "Aaron1", :cas 5090205399720, :expiry 0, :mutation-token nil, :content {:hitpoints 23832, :level 141, :loggedIn true, :name "Aaron1", :jsonType "player", :experience 248, :uuid "78edf902-7dd2-49a4-99b4-1c94ee286a33"}}
+        
+        (b/replace bucket "Aaron1" {:hitpoints 23832, :level 141, :loggedIn true, :name "Aaron1", :jsonType "player", :experience 248, :uuid "78edf902-7dd2-49a4-99b4-1c94ee286a33"})
+            => {:id "Aaron1", :cas 6654687454080, :expiry 0, :mutation-token nil, :content {:hitpoints 23832, :level 141, :loggedIn true, :name "Aaron1", :jsonType "player", :experience 248, :uuid "78edf902-7dd2-49a4-99b4-1c94ee286a33"}}
 ```
 ## License
 

@@ -15,6 +15,21 @@
 (def ^{:doc "Wrapper of clojure.data.json/json-str."}
   write-json json/json-str)
 
+(defn content
+  [json-document]
+  (if json-document
+    (-> json-document
+        .content
+        .toString
+        read-json)))
+
+(defn document
+  [jsondocument]
+  {:id (.id jsondocument)
+   :cas (.cas jsondocument)
+   :expiry (.expiry jsondocument)
+   :mutation-token (.mutationToken jsondocument)
+   :content (content jsondocument)})
 
 
 (defn create-counter
@@ -81,16 +96,4 @@
   ([bucket] (close bucket 30 :SECONDS))
   ([bucket time type]
    (.close bucket time (u/time type))))
-
-
-(defn document
-  [jsondocument]
-  {:id (.id jsondocument)
-   :cas (.cas jsondocument)
-   :expiry (.expiry jsondocument)
-   :mutation-token (.mutationToken jsondocument)
-   :content  (-> jsondocument
-                 .content
-                 .toString
-                 read-json)})
 
