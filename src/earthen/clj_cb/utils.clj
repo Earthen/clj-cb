@@ -1,4 +1,5 @@
 (ns earthen.clj-cb.utils
+  (:refer-clojure :exclude [time])
   (:import [java.util.concurrent TimeUnit]))
 
 
