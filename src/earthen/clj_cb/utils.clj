@@ -1,6 +1,7 @@
 (ns earthen.clj-cb.utils
   (:refer-clojure :exclude [time])
-  (:import [java.util.concurrent TimeUnit]))
+  (:import [java.util.concurrent TimeUnit]
+           [com.couchbase.client.java.bucket BucketType]))
 
 
 (defn time
@@ -18,3 +19,17 @@
         TimeUnit/HOURS
         (= :DAYS time-type)
         TimeUnit/DAYS))
+
+(defn btype->map
+  [type]
+  (cond (= (BucketType/COUCHBASE) type)
+        :COUCHBASE
+        (= (BucketType/MEMCACHED) type)
+        :MEMCACHED))
+
+(defn map->btype
+  [type]
+  (cond (= :COUCHBASE type)
+        (BucketType/COUCHBASE)
+        (= :MEMCACHED type)
+        (BucketType/MEMCACHED)))
