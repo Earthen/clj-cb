@@ -12,7 +12,7 @@
 
 (defn open-bucket
   ([cluster bucket-name]
-   (create-bucket cluster bucket-name 20 :SECONDS))
+   (open-bucket cluster bucket-name 20 :SECONDS))
   ([cluster bucket-name time time-type]
    (.openBucket cluster bucket-name time (u/time time-type))))
 
@@ -45,7 +45,7 @@
 (defn- bucket-settings
   [^BucketSettings bucket]
   {:name (.name bucket)
-   :type (u/btype->type(.type bucket))
+   :type (u/btype->map(.type bucket))
    :quota (.quota bucket)
    :port (.port bucket)
    :password (.password bucket)

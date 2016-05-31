@@ -44,7 +44,7 @@
   ([bucket id]
    (get bucket id :json))
   ([bucket id format]
-   (let [doc (.get bucket id)]
+   (let [doc (.get bucket id 5 (u/time :SECONDS))]
      (if doc
        (if (= :raw format)
          (-> doc
@@ -82,7 +82,7 @@
   [bucket id json]
   (let [json (if (string? json) (read-json json) json)
         doc (create-json-document id json)]
-    (document (.upsert bucket doc))))
+    (document (.upsert bucket doc ))))
 
 (defn manager
   [bucket]
