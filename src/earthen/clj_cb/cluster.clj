@@ -11,6 +11,7 @@
     (CouchbaseCluster/create urls)))
 
 (defn open-bucket
+  "Open a bucket from a the cluster"
   ([cluster bucket-name]
    (open-bucket cluster bucket-name 20 :SECONDS))
   ([cluster bucket-name time time-type]
@@ -61,10 +62,10 @@
    (map bucket-settings (.getBuckets cluster-manager))))
 
 
-(defn insert-bucket
+(defn insert-bucket!
   "Creates a new bucket in the cluster giving a bucket settings"
   ([cluster-manager bucket-settings]
-   (insert-bucket cluster-manager bucket-settings 60 :SECONDS))
+   (insert-bucket! cluster-manager bucket-settings 60 :SECONDS))
   ([cluster-manager bucket-settings time time-type]
    (try
      (.insertBucket cluster-manager (create-bucket-settings bucket-settings) time (u/time time-type))
