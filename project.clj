@@ -1,4 +1,4 @@
-(defproject earthen/clj-cb "0.2.1"
+(defproject earthen/clj-cb "0.2.2"
   :description "A Clojure java-client wrapper for Couchbase Server 4.x"
   :url "http://example.com/FIXME"
   :license {:name "Apache Public License"
