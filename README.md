@@ -15,7 +15,7 @@ A Clojure java-client wrapper for Couchbase Server 4.
     (def cluster (c/create "localhost"))
     
     ;; we create a bucket
-    (def bucket (c/create-bucket cluster "gamesim-sample"))
+    (def bucket (c/open-bucket cluster "gamesim-sample"))
     
     ;; we get documents from bucket mapped
     (b/get bucket "Aaron1")

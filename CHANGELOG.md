@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file. This change
 
 ## [0.2.0] - 2016-05-31
 ### Added
+- You can now create SpatialView (not query).
+- Documentation
+### Changed
+- Refactor create-bucket to open-bucket, since you are opening a connection.
+- Added ! at the end of the functions name to the functions that change the documents(touch!, get-and-touch!, repace!, remove!)
+
+## [0.2.0] - 2016-05-31
+### Added
 - Basic Management for Cluster and Buckets.
 ### Changed
 - Updated couchbase client to 2.2.7

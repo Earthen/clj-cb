@@ -6,7 +6,7 @@
   "Only one cluster per group"
   (ref {}))
 
-(def cb-defaul-cluster
+(def cb-default-cluster
   (ref nil))
 
 (defn- cb-cluster-builder
@@ -21,7 +21,8 @@
   (.openBucket @cb-cluster name))
 
 (defn get-bucket
-  ([name] (get-bucket name @cb-defaul-cluster @created-buckets))
+  ([name]
+   (get-bucket name @cb-default-cluster @created-buckets))
   ([name cluster bucket])
   (let [k (keyword name)]
     (when ((complement contains?) @created-buckets k)

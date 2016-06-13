@@ -5,15 +5,17 @@
            [com.couchbase.client.java.view SpatialView DesignDocument]))
 
 (defn create-spatial-view
+  "Creates a SpatialView giving a name and the string of the function of the view"
   [name string]
   (SpatialView/create name string))
 
 (defn create-design-document
-  "Name and list of views"
+  "Creates a DesignDocument giving the name and a-list of views"
   [name a-list]
   (DesignDocument/create name a-list))
 
 (defn insert-design-document
+  "Inserts the design to the bucketManager"
   [bucket-manager design]
   (.insertDesignDocument bucket-manager design))
 
