@@ -34,12 +34,13 @@
    :content (content->map jsondocument)})
 
 
-(defn create-counter!
+(defn counter!
   "Increment or decrement a counter. If only key given, will take initial value as 0 (if not exists) and increment with 1"
   ([bucket k ]
-   (create-counter! bucket k 0 1))
+   (counter! bucket k 1 0))
   ([bucket k delta initial]
-   (.counter bucket k delta initial)))
+   (-> (.counter bucket k delta initial)
+       document->map)))
 
 (defn get
   "Retrieves a document from the bucket. By default :json map document is returned.

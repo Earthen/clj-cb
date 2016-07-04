@@ -70,3 +70,12 @@
    (try
      (.insertBucket cluster-manager (create-bucket-settings bucket-settings) time (u/time time-type))
      (catch Exception e (str "caught exception: " (.getMessage e))))))
+
+(defn remove-bucket!
+  "Creates a new bucket in the cluster giving a bucket settings"
+  ([cluster-manager bucket-name]
+   (remove-bucket! cluster-manager bucket-name 60 :SECONDS))
+  ([cluster-manager bucket-name time time-type]
+   (try
+     (.removeBucket cluster-manager bucket-name time (u/time time-type))
+     (catch Exception e (str "caught exception: " (.getMessage e))))))
