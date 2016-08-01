@@ -5,10 +5,12 @@
            [com.couchbase.client.java.cluster DefaultBucketSettings BucketSettings]))
 
 (defn create
-  "Create and sets the cluster/s with a vector or a string"
-  [string]
-  (let [urls (if (string? string) (vector string) string)]
-    (CouchbaseCluster/create urls)))
+  "Create and sets the cluster/s with a vector or a string, if no params passed it uses default url (172.0.0.1)"
+  ([]
+   (CouchbaseCluster/create))
+  ([string]
+   (let [urls (if (string? string) (vector string) string)]
+     (CouchbaseCluster/create urls))))
 
 (defn open-bucket
   "Open a bucket from a the cluster"
@@ -27,7 +29,7 @@
   ([cluster]
    (disconnect cluster 20 :SECONDS))
   ([cluster timeout type]
-   (.disconnect cluster (u/time type))))
+   (.disconnect cluster timeout (u/time type))))
 
 (defn create-bucket-settings
   "Create a bucket settings object for insert"
@@ -55,7 +57,7 @@
    :flush? (.enableFlush bucket)})
 
 (defn buckets
-  "Giving a cluster manager returns all the buckets config from the cluster"
+  "Giving a cluster manager returns all the bucket settings from the cluster"
   ([cluster {:keys [username password] :as credentials :or {username "" password ""}}]
    (buckets (manager cluster credentials)))
   ([cluster-manager]

@@ -28,6 +28,7 @@
         :MEMCACHED))
 
 (defn map->btype
+  ":COUCHBASE or :MEMCACHED"
   [type]
   (cond (= :COUCHBASE type)
         (BucketType/COUCHBASE)
