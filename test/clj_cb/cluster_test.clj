@@ -17,6 +17,8 @@
     (let [created-bucket (get-bucket fx/bucket-name)]
       (is (= fx/default-bucket-settings created-bucket)))))
 
-
+(deftest disconnect
+  (testing "disconnect"
+    (is (= true (c/disconnect fx/cluster)))))
 
 

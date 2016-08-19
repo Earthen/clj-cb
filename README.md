@@ -1,6 +1,6 @@
 # clj-cb
 
-UNDER CONSTRUCTION
+UNDER CONSTRUCTION 
 
 A Clojure java-client wrapper for Couchbase Server 4.
 
@@ -44,5 +44,4 @@ A Clojure java-client wrapper for Couchbase Server 4.
 
 Copyright © 2016 
 
-Distributed under the Apache Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Apache Public License either version 2.0.
