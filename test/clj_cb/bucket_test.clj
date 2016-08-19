@@ -15,4 +15,3 @@
     (is (= book (:content item)) "insert/replace")
     (is (= item (b/get (fx/bucket) (:name book))))))
 
-

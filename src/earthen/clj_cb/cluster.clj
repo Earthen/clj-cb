@@ -19,7 +19,6 @@
   ([cluster bucket-name time time-type]
    (.openBucket cluster bucket-name time (u/time time-type))))
 
-
 (defn manager
   "Returns a cluster manager giving a cluster and credentials"
   [cluster {username :username password :password}]
