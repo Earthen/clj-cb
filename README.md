@@ -1,6 +1,7 @@
 # clj-cb
 
-UNDER CONSTRUCTION 
+DISCONTINUED AT THE MOMENT
+If needed I can work on it again.
 
 A Clojure java-client wrapper for Couchbase Server 4.
 
