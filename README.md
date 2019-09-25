@@ -3,7 +3,7 @@
 DISCONTINUED AT THE MOMENT
 If needed I can work on it again.
 
-A Clojure java-client wrapper for Couchbase Server 4.
+A Clojure java-client wrapper for Couchbase Server 4. Now updated to support 6.0 with Couchbase Java client version 2.7.9.
 
 ## Usage
 
@@ -17,6 +17,12 @@ A Clojure java-client wrapper for Couchbase Server 4.
     
     ;; we create a bucket
     (def bucket (c/open-bucket cluster "gamesim-sample"))
+
+    ;; we authenticate with the bucket password, note: the password parameter on the c/bucket-open
+    ;; no longer works and you will get the exception MixedAuthenticationException
+    ;; Mixed mode authentication not allowed, use Bucket credentials, User credentials (rbac) or Certificate auth
+
+    (c/authenticate "gamesim-sample" "secret")
     
     ;; we get documents from bucket mapped
     (b/get bucket "Aaron1")

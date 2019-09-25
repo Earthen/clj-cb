@@ -1,9 +1,10 @@
-(ns clj-cb.fixtures
+(ns earthen.clj-cb.fixtures
   (:require [clojure.test :refer :all]
             [earthen.clj-cb.cluster :as c]
             [earthen.clj-cb.cluster]))
 
-(def cluster (c/create))
+(def cluster (atom nil))
+
 (def bucket-name "earthen_test")
 (def default-bucket-settings {:name bucket-name
                               :type :COUCHBASE
@@ -16,11 +17,11 @@
 
 (defn bucket
   []
-  (c/open-bucket cluster bucket-name))
+  (c/open-bucket @cluster bucket-name))
 
 (defn manager
   []
-  (c/manager cluster {:username "earthen" :password "earthen"}))
+  (c/manager @cluster {:username "Administrator" :password "Admin123"}))
 
 ;; (defn init-bucket
 ;;   [f]
@@ -30,8 +31,17 @@
 ;;         manager (c/manager cluster {:username "earthen" :password "earthen"})]
 ;;     (f)))
 
+(defn authenticate
+  [username password]
+  (c/authenticate @cluster username password))
+
 (defn init
   [f]
-  (c/remove-bucket! manager bucket-name)
-  (c/insert-bucket! manager default-bucket-settings)
-  (f))
+  (reset! cluster (c/create))
+  (c/remove-bucket! (manager) bucket-name)
+  (c/insert-bucket! (manager) default-bucket-settings)
+  (f)
+  (try
+    (c/disconnect @cluster)
+    (catch java.util.concurrent.RejectedExecutionException e (println (str "Caught Expected Exception " e)))))
+

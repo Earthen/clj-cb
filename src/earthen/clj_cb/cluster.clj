@@ -12,6 +12,12 @@
    (let [urls (if (string? string) (vector string) string)]
      (CouchbaseCluster/create urls))))
 
+(defn authenticate
+  "Login to cluster"
+  [cluster username password]
+  (.authenticate cluster username password))
+  
+
 (defn open-bucket
   "Open a bucket from a the cluster"
   ([cluster bucket-name]
