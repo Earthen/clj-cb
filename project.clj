@@ -1,4 +1,4 @@
-(defproject earthen/clj-cb "0.2.3-SNAPSHOT"
+(defproject earthen/clj-cb "0.2.4-SNAPSHOT"
   :description "A Clojure java-client wrapper for Couchbase Server 4.x"
   :url "https://github.com/Earthen/clj-cb"
   :license {:name "Apache Public License"
