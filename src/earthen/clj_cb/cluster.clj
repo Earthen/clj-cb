@@ -13,7 +13,9 @@
      (CouchbaseCluster/create urls))))
 
 (defn authenticate
-  "Login to cluster"
+  "Authenticate with the bucket password, note: the password parameter on the c/bucket-open
+    no longer works and you will get the exception MixedAuthenticationException Mixed mode
+    authentication not allowed, use Bucket credentials, User credentials (rbac) or Certificate auth"
   [cluster username password]
   (.authenticate cluster username password))
   
