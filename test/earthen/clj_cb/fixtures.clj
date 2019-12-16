@@ -1,7 +1,6 @@
 (ns earthen.clj-cb.fixtures
   (:require [clojure.test :refer :all]
-            [earthen.clj-cb.cluster :as c]
-            [earthen.clj-cb.cluster]))
+            [earthen.clj-cb.cluster :as c]))
 
 (def cluster (atom nil))
 
