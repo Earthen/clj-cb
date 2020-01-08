@@ -1,5 +1,7 @@
 # clj-cb
 
+![](https://github.com/fhitchen/clj-cb/workflows/Clojure%20CI/badge.svg)
+
 A Clojure java-client wrapper for Couchbase Server 4. Now updated to support 6.0 with Couchbase Java client version 2.7.10. Simple N1QL query support has been added as well as basic N1QL prepared statement execution. Not all of the BNF-aware DSL clauses and expressions are yet supported. The unsupported clauses are JOIN, NEST, UNNEST, LET, UNION, INTERSECT and EXCEPT. Unsupported Expressions are add, between, concat, divide, exists, FALSE, in, is missing, is valued, MISSING, multiply, not between, not in, not like, NULL and subtract.
 
 ## Usage

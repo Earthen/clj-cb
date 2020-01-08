@@ -51,7 +51,7 @@
     (is (= {:exists nil} (b/lookup-in (fx/bucket) (:name bigger-book) ["exists"])))
     (is (= {:exception "Path mismatch \"year.missing\" in bigger-living-clojure"} (b/lookup-in (fx/bucket) (:name bigger-book) ["year.missing"])))))
 
-(deftest query
+(deftest ^:query query
   (fx/authenticate "earthen" "earthen")
   (b/create-primary-index (fx/bucket))
   (dorun
@@ -60,7 +60,7 @@
           (str (:name bigger-book) "-" %)
           (assoc bigger-book :name (str (:name bigger-book) "-" %)))
         (range 10)))
-  (Thread/sleep 1000)
+  (Thread/sleep 5000)
   (is (= 10 (count (:rows (b/query (fx/bucket) "SELECT meta().id, editions FROM `earthen_test`")))))
   (is (= 0 (count (:rows (b/query (fx/bucket) "SELECT * FROM `earthen_test` where name = \"not found\"")))))
   (is (= 1 (count (:rows (b/query (fx/bucket) "SELECT * FROM `earthen_test` where name = \"bigger-living-clojure-9\"")))))
@@ -166,7 +166,7 @@
            (.toString (b/statement {:select [{:s-as ["a" "meta().id"]} {:as ["b" "pages"]}]
                                     :from [{:i "earthen_test"}]}))))))
 
-(deftest p-query
+(deftest ^:query p-query
   (fx/authenticate "earthen" "earthen")
   (b/create-primary-index (fx/bucket))
   (let [item (b/replace! (fx/bucket) (:name bigger-book) bigger-book)]
@@ -176,7 +176,7 @@
             (str (:name bigger-book) "-" %)
             (assoc bigger-book :name (str (:name bigger-book) "-" %)))
           (range 10)))
-    (Thread/sleep 2000)
+    (Thread/sleep 5000)
     (testing "Basic select an limit and not ad-hoc"
       (is (= 1 (count (:rows (b/query (fx/bucket) {:select ["*"]
                                                    :from [{:i "earthen_test"}]
