@@ -1,0 +1,14 @@
+version: '2.2'
+services:
+  couchbase:
+    build: ./couchbase
+    container_name: clj-cb-testdb
+    ports:
+      - '8091-8094:8091-8094'
+      - '11207:11207'
+      - '11210:11210'
+      - '18091-18093:18091-18093'
+    networks:
+      - clj-cb
+networks:
+  clj-cb: null

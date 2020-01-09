@@ -96,6 +96,13 @@ A Clojure java-client wrapper for Couchbase Server 4. Now updated to support 6.0
 
        => [{:a "bigger-living-clojure-9", :b 12} {:a "bigger-living-clojure-8", :b 12}]
 ```
+
+## How to run test code
+
+1. `lein deps`
+2. `./docker/up.sh`
+3. `lein test`
+
 ## License
 
 Copyright © 2019
