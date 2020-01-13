@@ -8,6 +8,7 @@ services:
       - '11207:11207'
       - '11210:11210'
       - '18091-18093:18091-18093'
+    options: --cpus 2 --memory 4GB
     networks:
       - clj-cb
 networks:
