@@ -31,8 +31,12 @@
 ;;     (f)))
 
 (defn authenticate
+  [username password] (c/authenticate @cluster username password))
+
+(defn re-authenticate
   [username password]
-  (c/authenticate @cluster username password))
+  (swap! cluster (fn [_] (c/create)))
+  (authenticate username password))
 
 (defn init
   [f]
@@ -43,4 +47,3 @@
   (try
     (c/disconnect @cluster)
     (catch java.util.concurrent.RejectedExecutionException e (println (str "Caught Expected Exception " e)))))
-

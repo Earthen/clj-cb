@@ -16,8 +16,7 @@
                   :references [{:item "ref-item-0"}
                                {:item {:label 99}}]})
 
-
-(use-fixtures :each fx/init)
+(use-fixtures :once fx/init)
 
 (deftest crud
   (fx/authenticate "earthen" "earthen")
@@ -26,7 +25,7 @@
     (is (= item (b/get (fx/bucket) (:name book))))))
 
 (deftest crud-authentication-fail
-  (fx/authenticate "earthen" "notearthen")
+  (fx/re-authenticate "earthen" "notearthen")
   (is (thrown-with-msg?  com.couchbase.client.java.error.InvalidPasswordException
                          #"Passwords for bucket \"earthen_test\" do not match."
                          (b/replace! (fx/bucket) (:name book) book)))
@@ -64,32 +63,31 @@
   (is (= 10 (count (:rows (b/query (fx/bucket) "SELECT meta().id, editions FROM `earthen_test`")))))
   (is (= 0 (count (:rows (b/query (fx/bucket) "SELECT * FROM `earthen_test` where name = \"not found\"")))))
   (is (= 1 (count (:rows (b/query (fx/bucket) "SELECT * FROM `earthen_test` where name = \"bigger-living-clojure-9\"")))))
-  (let [result 
+  (let [result
         (b/query (fx/bucket) "SELECT meta().id FROM `earthen_test` where name = \"bigger-living-clojure-7\"")]
     (is (= "success" (:status result)))
     (is (= 1 (count (:rows result))))
     (is (= "bigger-living-clojure-7" (:id (first (:rows result))))))
-  (let [result 
+  (let [result
         (b/query (fx/bucket) "SELECT meta().id FROM `earthen_test` LIMIT 3")]
     (is (= "success" (:status result)))
     (is (= 3 (count (:rows result))))
     (is (= "bigger-living-clojure-0" (:id (first (:rows result)))))
     (is (= "bigger-living-clojure-1" (:id (second (:rows result)))))
     (is (= "bigger-living-clojure-2" (:id (nth (:rows result) 2)))))
-  (let [result 
+  (let [result
         (b/query (fx/bucket) "SELECT meta().id FROM `earthen_test` OFFSET 3 LIMIT 3")]
     (is (= "success" (:status result)))
     (is (= 3 (count (:rows result))))
     (is (= "bigger-living-clojure-3" (:id (first (:rows result)))))
     (is (= "bigger-living-clojure-4" (:id (second (:rows result)))))
     (is (= "bigger-living-clojure-5" (:id (nth (:rows result) 2)))))
-  (let [result 
+  (let [result
         (b/query (fx/bucket) "SELECT meta().id FROM `earthen_test` OFFSET 9 LIMIT 1")]
     (is (= "success" (:status result)))
     (is (= 1 (count (:rows result))))
-    (is (= "bigger-living-clojure-9" (:id (first (:rows result)))))
-    )
-  (let [result 
+    (is (= "bigger-living-clojure-9" (:id (first (:rows result))))))
+  (let [result
         (b/query (fx/bucket) "SELECT meta().id FROM `earthen_test` OFFSET 10 LIMIT 1")]
     (is (= "success" (:status result)))
     (is (= 0 (count (:rows result))))
@@ -205,7 +203,7 @@
                                                      :where [{:like ["meta().id" ["bigger-%"]]}
                                                              {:and {:gt ["meta().id" "$id"]}}]
                                                      :order-by {:asc "meta().id"}}
-                                      {"id" "bigger-living-clojure-7"})))))
+                                        {"id" "bigger-living-clojure-7"})))))
       (is (= 2 (count (:rows (b/p-query (fx/bucket) {:select ["meta().id" "pages"]
                                                      :from [{:i "earthen_test"}]
                                                      :use-index ["#primary"]
@@ -223,5 +221,3 @@
                                             :order-by {:desc "meta().id"}
                                             :limit 2}
                                {"id" "bigger-living-clojure-7"})))))))
-
-
