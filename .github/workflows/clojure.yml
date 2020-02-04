@@ -13,5 +13,7 @@ jobs:
         run: lein deps
       - name: Run couchbase container
         run: ./docker/up.sh
+      - name: Create view
+        run: ./docker/setup-view.sh
       - name: Run tests
         run: lein test :all

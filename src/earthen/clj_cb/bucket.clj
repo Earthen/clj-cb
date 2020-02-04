@@ -6,7 +6,8 @@
            [com.couchbase.client.java.error DocumentDoesNotExistException]
            [com.couchbase.client.java.error.subdoc PathMismatchException]
            [com.couchbase.client.java.query SimpleN1qlQuery Select N1qlQuery N1qlParams Statement]
-           [com.couchbase.client.java.query.dsl Expression Sort])
+           [com.couchbase.client.java.query.dsl Expression Sort]
+           [com.couchbase.client.java.view ViewQuery Stale])
   (:require [clojure.data.json :as json]
             [earthen.clj-cb.utils :as u]))
 
@@ -37,10 +38,9 @@
    :mutation-token (.mutationToken jsondocument)
    :content (content->map jsondocument)})
 
-
 (defn counter!
   "Increment or decrement a counter. If only key given, will take initial value as 0 (if not exists) and increment with 1"
-  ([bucket k ]
+  ([bucket k]
    (counter! bucket k 1 0))
   ([bucket k delta initial]
    (-> (.counter bucket k delta initial)
@@ -57,7 +57,7 @@
        (if (= :raw format)
          (-> doc
              .content
-            .toString)
+             .toString)
          (document->map doc))))))
 
 (defn lookup-in
@@ -88,7 +88,7 @@
   [bucket id seconds]
   (let [doc (.getAndLock bucket id seconds)]
     (if doc
-       (document->map doc))))
+      (document->map doc))))
 
 (defn touch!
   "Renews the expiration time of a document with the default key/value timeout"
@@ -137,7 +137,7 @@
 (declare expression)
 (declare statement)
 
-(defmulti expr (fn ([x & xs] 
+(defmulti expr (fn ([x & xs]
                     (mapv class (into [x] xs)))))
 (defmethod expr [String]
   [e]
@@ -207,7 +207,7 @@
   [input]
   (if (or (instance? String input) (instance? Statement input))
     input
-    (let [{:keys [select select-all select-distinct from where limit offset group-by order-by use-index]} input] 
+    (let [{:keys [select select-all select-distinct from where limit offset group-by order-by use-index]} input]
       (when (and (nil? select) (nil? select-all) (nil? select-distinct))
         (throw (ex-info "select missing" input)))
 
@@ -224,10 +224,10 @@
 
         (when from
           (reset! path (.from @path (process-where-clause from))))
-      
+
         (when use-index
           (reset! path (.useIndex @path (into-array use-index))))
-      
+
         (when where
           (reset! path (.where @path (process-where-clause where))))
 
@@ -242,7 +242,7 @@
 
         (when offset
           (reset! path (.offset @path offset)))
-      
+
         @path))))
 
 (defn create-primary-index
@@ -260,17 +260,17 @@
 (defn simple-query->map
   "Converts a DefaultN1qlQueryResult to a map"
   [result]
-  {:all-rows (.allRows result) 
-   :context-id (.clientContextId result) 
-   :errors(.errors result) 
+  {:all-rows (.allRows result)
+   :context-id (.clientContextId result)
+   :errors (.errors result)
    :final-success (.finalSuccess result)
-   :n1ql-metrics (.info result) 
-   :iterator (.iterator result) 
-   :parse-success (.parseSuccess result) 
-   :profile-info (.profileInfo result) 
-   :requestid (.requestId result) 
-   :rows (query-rows->map result) 
-   :signature (.signature result) 
+   :n1ql-metrics (.info result)
+   :iterator (.iterator result)
+   :parse-success (.parseSuccess result)
+   :profile-info (.profileInfo result)
+   :requestid (.requestId result)
+   :rows (query-rows->map result)
+   :signature (.signature result)
    :status (.status result)})
 
 (defn ad-hoc
@@ -296,4 +296,23 @@
                                                               (JsonObject/from query-params)
                                                               (when (nil? mode)
                                                                 (.adhoc (N1qlParams/build) false)))))))
+; mapping for stale enum
+(def stale-map {:false Stale/FALSE :true Stale/TRUE :update-after Stale/UPDATE_AFTER})
+(defn build-view-query [from option]
+  (let [stale (stale-map (:stale option))
+        limit (:limit option)
+        skip (:skip option)
+        key (:key option)]
+    (cond-> from
+      ((complement nil?) stale)  (.stale stale)
+      ((complement nil?) limit) (.limit limit)
+      ((complement nil?) key) (.key key)
+      ((complement nil?) skip) (.skip skip))))
 
+(defn v-query
+  "Queries a view on the bucket."
+  ([bucket design-doc view-name]
+   (v-query bucket design-doc view-name nil))
+  ([bucket design-doc view-name option]
+   (let [q (.query bucket (build-view-query (ViewQuery/from design-doc view-name) option))]
+     (if (not (.success q)) (.error q) (map #(-> % .document content->map) (.allRows q))))))

@@ -40,6 +40,10 @@ log "$(date +"%T") Create buckets ........."
 couchbase-cli bucket-create -c 127.0.0.1 --username Administrator --password Admin123 --bucket-type couchbase --bucket-ramsize 250 --bucket earthen_test
 
 
+# Create the bucket for test view
+log "$(date +"%T") Create buckets ........."
+couchbase-cli bucket-create -c 127.0.0.1 --username Administrator --password Admin123 --bucket-type couchbase --bucket-ramsize 250 --bucket earthen_test2 --enable-flush=1
+
 # Create user
 log "$(date +"%T") Create users ........."
 couchbase-cli user-manage -c 127.0.0.1:8091 -u Administrator -p Admin123 --set --rbac-username earthen --rbac-password earthen \

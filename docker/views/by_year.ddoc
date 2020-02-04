@@ -1,0 +1,7 @@
+{
+  "views" : {
+    "by_year" : {
+      "map" : "function (doc, meta) { \n if (doc.year) { emit(doc.year, null) } \n}"
+    }
+  }
+}

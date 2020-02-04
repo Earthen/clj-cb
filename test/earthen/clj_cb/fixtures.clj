@@ -15,8 +15,8 @@
                               :flush? true})
 
 (defn bucket
-  []
-  (c/open-bucket @cluster bucket-name))
+  ([] (c/open-bucket @cluster bucket-name))
+  ([name] (c/open-bucket @cluster name)))
 
 (defn manager
   []
