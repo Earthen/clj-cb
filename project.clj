@@ -1,4 +1,4 @@
-(defproject earthen/clj-cb "0.3.0"
+(defproject earthen/clj-cb "0.3.1"
   :description "A Clojure java-client wrapper for Couchbase Server 4.x"
   :url "https://github.com/Earthen/clj-cb"
   :license {:name "Apache Public License"
@@ -10,4 +10,7 @@
   :plugins [[lein-codox "0.9.4"]]
   :test-selectors {:default  #(not (:query %))
                    :query :query
-                   :all (constantly true)})
+                   :all (constantly true)}
+  :deploy-repositories [["releases"  {:sign-releases false :url "https://clojars.org"}]
+                        ["snapshots" {:sign-releases false :url "https://clojars.org"}]]
+)
